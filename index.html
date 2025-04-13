@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vibeGraphQL - Minimalistic GraphQL Library for Go</title>
+  <style>
+    :root {
+      --primary: #6a5acd;
+      --secondary: #8a2be2;
+      --dark: #1e1e2e;
+      --light: #f8f9fa;
+      --code-bg: #2d2d3a;
+      --gray: #6c757d;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: var(--light);
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .logo {
+      max-width: 250px;
+      margin-bottom: 1rem;
+    }
+    
+    .tagline {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: white;
+      color: var(--primary);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-ghost {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+    }
+    
+    .features {
+      padding: 5rem 0;
+      background-color: white;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--primary);
+      font-size: 2rem;
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    .code-block {
+      background-color: var(--code-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      overflow-x: auto;
+      color: #f8f8f2;
+    }
+    
+    pre {
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre-wrap;
+    }
+    
+    .quick-start {
+      padding: 5rem 0;
+      background-color: #f5f5f5;
+    }
+    
+    .example {
+      padding: 5rem 0;
+    }
+    
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 2rem;
+    }
+    
+    .tab {
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .social-links {
+      margin-top: 2rem;
+    }
+    
+    .social-links a {
+      display: inline-block;
+      margin: 0 1rem;
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn {
+        display: block;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .step {
+      display: flex;
+      margin-bottom: 2rem;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      background-color: var(--primary);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .schema-example {
+      padding: 1.5rem;
+      background-color: #f5f7fa;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 5px 5px 0;
+      margin: 1.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="/api/placeholder/250/100" alt="vibeGraphQL Logo" class="logo">
+      <h1>vibeGraphQL</h1>
+      <p class="tagline">A minimalistic GraphQL library for Go supporting queries, mutations, and subscriptions</p>
+      <div>
+        <a href="#quick-start" class="btn">Get Started</a>
+        <a href="https://github.com/Raezil/vibeGraphql" class="btn btn-ghost">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">✨ Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Query Resolvers</h3>
+          <p>Efficiently fetch data with clean, intuitive resolver functions</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛠️</div>
+          <h3>Mutation Resolvers</h3>
+          <p>Update and modify your data with ease</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📡</div>
+          <h3>Subscription Resolvers</h3>
+          <p>Real-time updates to keep your clients in sync</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧵</div>
+          <h3>Thread-safe</h3>
+          <p>Secure in-memory data handling for concurrent operations</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📂</div>
+          <h3>Multiple Files Uploader</h3>
+          <p>Apollo-like file upload capabilities built-in</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔌</div>
+          <h3>Simple Integration</h3>
+          <p>Easy to integrate with your HTTP handlers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick-start" id="quick-start">
+    <div class="container">
+      <h2 class="section-title">🚀 Getting Started</h2>
+      
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Install vibeGraphQL</h3>
+          <div class="code-block">
+            <pre>go get github.com/Raezil/vibeGraphql</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Define Your Schema and Resolvers</h3>
+          <div class="code-block">
+            <pre>if err := RegisterResolversFromSDL("schema.graphql"); err != nil {
+	log.Fatalf("Failed to register resolvers: %v", err)
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Define schema.graphql</h3>
+          <div class="schema-example">
+            <pre>type Query {
+  user(id: ID!): User
+  users(ids: [ID!]!): [User]
+}
+
+type Mutation {
+  uploadFiles(files: [FileInput]!): [String]
+  updateUser(id: ID!, name: String!): User
+}
+
+type Subscription {
+  userUpdates: User
+}
+
+type User {
+  id: String!
+  name: String!
+  age: Int!
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Start HTTP Server</h3>
+          <div class="code-block">
+            <pre>http.HandleFunc("/graphql", graphql.GraphqlHandler)
+http.HandleFunc("/subscriptions", graphql.SubscriptionHandler)
+
+log.Fatal(http.ListenAndServe(":8080", nil))</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="example">
+    <div class="container">
+      <h2 class="section-title">🧪 Full Example</h2>
+      <p style="text-align: center; margin-bottom: 2rem;">Here's a complete example showcasing vibeGraphQL's capabilities:</p>
+      
+      <div class="code-block">
+        <pre>package main
+
+import (
+	"context"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"sync"
+	"syscall"
+	"time"
+
+	graphql "github.com/Raezil/vibeGraphql"
+)
+
+// schemaDocument holds the parsed SDL document.
+var schemaDocument *graphql.Document
+
+// LoadSchemaSDL reads the SDL file and stores the parsed Document in schemaDocument.
+func LoadSchemaSDL(filePath string) error {
+	data, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to read SDL file %q: %v", filePath, err)
+	}
+	lexer := graphql.NewLexer(string(data))
+	parser := graphql.NewParser(lexer)
+	doc := parser.ParseDocument()
+	schemaDocument = doc
+	return nil
+}
+
+// RegisterResolversFromSDL uses schemaDocument to register resolvers for Query, Mutation, and Subscription.
+func RegisterResolversFromSDL(filePath string) error {
+	if err := LoadSchemaSDL(filePath); err != nil {
+		return err
+	}
+	if schemaDocument == nil {
+		return fmt.Errorf("schemaDocument is nil")
+	}
+
+	availableResolvers := map[string]graphql.ResolverFunc{
+		"user":        userResolver,
+		"users":       usersResolver,
+		"updateUser":  updateUserResolver,
+		"uploadFiles": uploadFilesResolver,
+		"userUpdates": userSubscriptionResolver,
+	}
+
+	// Helper to register resolvers for a given type.
+	registerForType := func(typeName string, registerFunc func(string, graphql.ResolverFunc)) error {
+		for _, def := range schemaDocument.Definitions {
+			typeDef, ok := def.(*graphql.TypeDefinition)
+			if !ok {
+				continue
+			}
+			if typeDef.Name != typeName {
+				continue
+			}
+			for _, field := range typeDef.Fields {
+				if resolver, ok := availableResolvers[field.Name]; ok {
+					registerFunc(field.Name, resolver)
+					fmt.Printf("Registered resolver for %s.%s\n", typeName, field.Name)
+				} else {
+					fmt.Printf("No resolver found for %s.%s; skipping\n", typeName, field.Name)
+				}
+			}
+		}
+		return nil
+	}
+
+	if err := registerForType("Query", graphql.RegisterQueryResolver); err != nil {
+		return err
+	}
+	if err := registerForType("Mutation", graphql.RegisterMutationResolver); err != nil {
+		return err
+	}
+	if err := registerForType("Subscription", graphql.RegisterSubscriptionResolver); err != nil {
+		return err
+	}
+
+	fmt.Println("Resolvers registered from SDL successfully.")
+	return nil
+}
+
+// User represents a sample user.
+type User struct {
+	ID      string  `json:"id"`
+	Name    string  `json:"name"`
+	Age     int     `json:"age"`
+	Friends []*User `json:"friends,omitempty"`
+}
+
+var (
+	userStore = map[string]*User{
+		"123": {ID: "123", Name: "John Doe", Age: 30, Friends: []*User{
+			{ID: "456", Name: "Jane Smith", Age: 25, Friends: []*User{
+				{ID: "789", Name: "Bob Johnson", Age: 28},
+			}},
+			{ID: "789", Name: "Bob Johnson", Age: 28},
+		}},
+		"456": {ID: "456", Name: "Jane Smith", Age: 25},
+		"789": {ID: "789", Name: "Bob Johnson", Age: 28},
+	}
+	mu sync.Mutex
+)
+
+func userResolver(source interface{}, args map[string]interface{}) (interface{}, error) {
+	id, ok := args["id"].(string)
+	if !ok {
+		return nil, fmt.Errorf("id argument missing or not a string")
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	user, exists := userStore[id]
+	if !exists {
+		return nil, fmt.Errorf("user with id %s not found", id)
+	}
+	return user, nil
+}
+
+func usersResolver(source interface{}, args map[string]interface{}) (interface{}, error) {
+	idsRaw, ok := args["ids"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("ids argument missing or not an array")
+	}
+	ids := make([]string, len(idsRaw))
+	for i, v := range idsRaw {
+		idStr, ok := v.(string)
+		if !ok {
+			return nil, fmt.Errorf("element at index %d is not a string", i)
+		}
+		ids[i] = idStr
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	var users []*User
+	for _, id := range ids {
+		if user, exists := userStore[id]; exists {
+			users = append(users, user)
+		}
+	}
+	return users, nil
+}
+
+func updateUserResolver(source interface{}, args map[string]interface{}) (interface{}, error) {
+	id, ok := args["id"].(string)
+	if !ok {
+		return nil, fmt.Errorf("id argument missing or not a string")
+	}
+	newName, ok := args["name"].(string)
+	if !ok {
+		return nil, fmt.Errorf("name argument missing or not a string")
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	user, exists := userStore[id]
+	if !exists {
+		return nil, fmt.Errorf("user with id %s not found", id)
+	}
+	user.Name = newName
+	return user, nil
+}
+
+func userSubscriptionResolver(source interface{}, args map[string]interface{}) (interface{}, error) {
+	ch := make(chan interface{})
+	go func() {
+		ticker := time.NewTicker(2 * time.Second)
+		defer ticker.Stop()
+		for range ticker.C {
+			mu.Lock()
+			user := userStore["123"]
+			mu.Unlock()
+			ch <- user
+		}
+	}()
+	return ch, nil
+}
+
+func uploadFilesResolver(source interface{}, args map[string]interface{}) (interface{}, error) {
+	rawFiles, ok := args["files"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("files argument not found or invalid")
+	}
+	targetDir := "./tmp"
+	if err := os.MkdirAll(targetDir, 0755); err != nil {
+		return nil, fmt.Errorf("failed to create directory %q: %v", targetDir, err)
+	}
+	var results []string
+	for idx, raw := range rawFiles {
+		fileData, ok := raw.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("file at index %d is invalid", idx)
+		}
+		filename, ok := fileData["filename"].(string)
+		if !ok {
+			return nil, fmt.Errorf("filename not provided for file at index %d", idx)
+		}
+		data, ok := fileData["data"].([]byte)
+		if !ok {
+			return nil, fmt.Errorf("file data not provided for file %q", filename)
+		}
+		filepath := fmt.Sprintf("%s/%s", targetDir, filename)
+		if err := ioutil.WriteFile(filepath, data, 0644); err != nil {
+			return nil, fmt.Errorf("failed to save file %q: %v", filename, err)
+		}
+		log.Printf("uploadFilesResolver: Received file %q with %d bytes", filename, len(data))
+		results = append(results, fmt.Sprintf("Uploaded file %q (%d bytes)", filename, len(data)))
+	}
+	return results, nil
+}
+
+func main() {
+	if err := RegisterResolversFromSDL("schema.graphql"); err != nil {
+		log.Fatalf("Failed to register resolvers: %v", err)
+	}
+
+	// Use the GraphqlUploadHandler for /graphql to support file uploads.
+	mux := http.NewServeMux()
+	mux.HandleFunc("/graphql", graphql.GraphqlUploadHandler)
+	mux.HandleFunc("/subscriptions", graphql.SubscriptionHandler)
+
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
+
+	// Graceful shutdown setup.
+	go func() {
+		fmt.Println("GraphQL server is running on http://localhost:8080")
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Could not listen on :8080: %v\n", err)
+		}
+	}()
+
+	// Listen for interrupt signal.
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+
+	fmt.Println("\nShutting down server...")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced to shutdown: %v", err)
+	}
+
+	fmt.Println("Server exiting")
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 5rem 0; background-color: var(--primary); color: white;">
+    <div class="container" style="text-align: center;">
+      <h2 style="margin-bottom: 2rem;">Ready to get started with vibeGraphQL?</h2>
+      <a href="https://github.com/Raezil/vibeGraphql" class="btn" style="background-color: white; color: var(--primary);">Star on GitHub</a>
+      <a href="#quick-start" class="btn btn-ghost">View Documentation</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>vibeGraphQL - A minimalistic GraphQL library for Go</p>
+      <p style="margin-top: 1rem; color: var(--gray);">Vibe coded using ChatGPT o3 model</p>
+      <div class="social-links">
+        <a href="https://github.com/Raezil/vibeGraphql">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple tab functionality
+    function setupTabs() {
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-tab');
+          
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab and corresponding content
+          tab.classList.add('active');
+          document.querySelector(`.tab-content[data-tab="${target}"]`).classList.add('active');
+        });
+      });
+    }
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          window.scrollTo({
+            top: target.offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Call setupTabs if there are any tabs on the page
+    if (document.querySelector('.tab')) {
+      setupTabs();
+    }
+  </script>
+</body>
+</html>
