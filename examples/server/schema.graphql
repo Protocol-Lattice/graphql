@@ -1,0 +1,19 @@
+type Query {
+  user(id: ID!): User
+  users(ids: [ID!]!): [User]
+}
+
+type Mutation {
+  uploadFiles(files: [FileInput]!): [String]
+  updateUser(id: ID!, name: String!): User
+}
+
+type Subscription {
+  userUpdates: User
+}
+
+type User {
+  id: String!
+  name: String!
+  age: Int!
+}
