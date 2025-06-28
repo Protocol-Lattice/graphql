@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/17e02a17-6b37-47ea-89d7-f3b878360552" alt="centered image">
+  <img src="https://github.com/user-attachments/assets/773487c2-743d-4fc4-8d6e-7e3d9cb5ee21" alt="centered image">
 </p>
 
 **vibeGraphQL** is a minimalistic GraphQL library for Go that supports **queries**, **mutations**, and **subscriptions** with a clean and intuitive API. 
