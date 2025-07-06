@@ -41,7 +41,7 @@ type Query {
 
 type Mutation {
   uploadFiles(files: [FileInput]!): [String]
-  updateUser(id: ID!, name: String!): User
+  updateUser(id: ID!, name: String!, age: Int!): User
 }
 
 type Subscription {
