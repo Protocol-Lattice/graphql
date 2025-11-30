@@ -86,7 +86,7 @@ import (
 	"syscall"
 	"time"
 
-	graphql "github.com/Raezil/vibeGraphql"
+	graphql "github.com/Protocol-Lattice/graphql"
 )
 
 // schemaDocument holds the parsed SDL document.
