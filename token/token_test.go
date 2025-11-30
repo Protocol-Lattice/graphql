@@ -1,4 +1,4 @@
-package vibeGraphql
+package token
 
 import "testing"
 
