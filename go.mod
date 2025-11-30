@@ -1,4 +1,4 @@
-module github.com/Raezil/vibeGraphql
+module github.com/Protocol-Lattice/graphql
 
 go 1.23.0
 
